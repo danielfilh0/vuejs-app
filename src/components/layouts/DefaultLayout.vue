@@ -1,8 +1,10 @@
 <template>
-  <header>Header</header>
+  <Header />
   <slot></slot>
 </template>
 
-<script setup></script>
+<script setup>
+import Header from "../Header.vue";
+</script>
 
 <style></style>
