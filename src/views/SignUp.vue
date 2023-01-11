@@ -105,7 +105,7 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 
 import FormCard from "../components/FormCard.vue";
