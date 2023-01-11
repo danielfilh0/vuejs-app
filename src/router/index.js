@@ -25,6 +25,12 @@ const router = createRouter({
       component: () => import("../views/SignUp.vue"),
       meta: { layout: "empty" },
     },
+    {
+      path: "/:pathMatch(.*)",
+      name: "page-not-found",
+      component: () => import("../views/PageNotFound.vue"),
+      meta: { layout: "empty" },
+    },
   ],
 });
 
