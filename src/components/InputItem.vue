@@ -1,12 +1,15 @@
 <template>
   <div class="input-item">
-    <label v-if="label" :for="id">{{ label }}</label>
+    <label v-if="props.label" :for="id"
+      >{{ props.label }} <span v-if="props.required">*</span></label
+    >
     <input
-      :id="id"
-      :type="type"
-      :value="modelValue"
-      :placeholder="placeholder"
-      @input="updateValue"
+      :id="props.id"
+      :type="props.type"
+      :value="props.modelValue"
+      :placeholder="props.placeholder"
+      @input="handleUpdateValue"
+      @keyup="handleError"
     />
   </div>
 </template>
@@ -14,9 +17,9 @@
 <script setup>
 import { defineEmits } from "vue";
 
-const emit = defineEmits(["update:modelValue"]);
+import isEmailValid from "../utils/isEmailValid";
 
-defineProps({
+const props = defineProps({
   id: String,
   label: {
     default: null,
@@ -26,17 +29,33 @@ defineProps({
     default: "text",
     type: String,
   },
+  required: {
+    default: false,
+    type: Boolean,
+  },
   placeholder: String,
   modelValue: [String, Number],
 });
 
-function updateValue(event) {
+const emit = defineEmits(["update:modelValue", "onError"]);
+
+function handleUpdateValue(event) {
   emit("update:modelValue", event.target.value);
+}
+
+// wip
+function handleError() {
+  if (props.required) {
+    if (props.id === "email") {
+      emit("onError", isEmailValid(props.modelValue));
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .input-item {
+  margin-bottom: 0.4rem;
   width: 100%;
 
   &:focus-within {
@@ -48,10 +67,6 @@ function updateValue(event) {
       border-color: var(--primary-color);
     }
   }
-
-  & + .input-item {
-    margin-top: 0.2rem;
-  }
 }
 
 label {
@@ -60,6 +75,10 @@ label {
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 1.3px;
+
+  span {
+    color: var(--primary-color);
+  }
 }
 
 input {

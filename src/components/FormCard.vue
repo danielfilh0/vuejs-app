@@ -17,6 +17,12 @@
     font-weight: 600;
   }
 
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
   form {
     margin-bottom: 0.5rem;
     display: flex;
@@ -24,17 +30,20 @@
     gap: 0.75rem;
   }
 
-  button {
-    padding: 0.5rem 0;
-    background: var(--primary-color);
-    color: var(--white-color);
-    border: none;
-    border-radius: 8px;
-    transition: 0.2s;
+  .wrapper.two-grids {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
 
-    &:hover,
-    &:focus {
-      box-shadow: 0 0 0 2px var(--gray-200-color);
+  .wrapper.three-grids {
+    display: grid;
+    grid-template-columns: 100px 200px 1fr 100px;
+    align-items: center;
+    column-gap: 2rem;
+
+    h3 {
+      grid-column: 1 / 5;
     }
   }
 
@@ -47,6 +56,10 @@
       text-decoration: none;
       color: var(--primary-color);
     }
+  }
+
+  .login-data {
+    width: 50%;
   }
 }
 </style>

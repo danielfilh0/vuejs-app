@@ -1,5 +1,5 @@
 <template>
-  <div class="sm-container">
+  <main class="sm-container">
     <FormCard>
       <div class="card">
         <h1>Olá visitante, seja bem-vindo!</h1>
@@ -11,7 +11,7 @@
             type="password"
             label="Senha"
           />
-          <button type="submit">Entrar</button>
+          <Button type="submit">Entrar</Button>
         </form>
 
         <p>
@@ -20,7 +20,7 @@
         </p>
       </div>
     </FormCard>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -28,7 +28,20 @@ import { ref } from "vue";
 
 import FormCard from "../components/FormCard.vue";
 import InputItem from "../components/InputItem.vue";
+import Button from "../components/Button.vue";
 
 const email = ref("");
 const password = ref("");
 </script>
+
+<style scoped lang="scss">
+.sm-container {
+  margin: 0 auto;
+  max-width: 30rem;
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+}
+</style>
