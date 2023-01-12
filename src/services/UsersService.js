@@ -46,7 +46,7 @@ class UsersService {
     const { email, password } = dataUser;
     const userAlreadyExists = await this.getByEmail(email);
 
-    if (userAlreadyExists) throw new Error("User already exists.");
+    if (userAlreadyExists) throw new Error("O usuário já existe.");
 
     const uid = await this.createInAuth({ email, password });
     const user = await this.createInDb(uid, dataUser);
@@ -57,7 +57,7 @@ class UsersService {
   async signIn({ email, password }) {
     const user = await this.getByEmail(email);
 
-    if (!user) throw new Error("User not exists.");
+    if (!user) throw new Error("O usuário não existe.");
 
     await signInWithEmailAndPassword(this.auth, email, password);
 

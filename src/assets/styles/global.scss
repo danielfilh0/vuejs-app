@@ -58,3 +58,7 @@ ul, li {
   max-width: 70rem;
   width: 100%;
 }
+
+.v-toast__item--error {
+  background-color: var(--red-color) !important;
+}

@@ -13,6 +13,7 @@
     "sass": "^1.57.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
+    "vue-toast-notification": "^3.0",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

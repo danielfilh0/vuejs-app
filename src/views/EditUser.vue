@@ -130,6 +130,8 @@ import InputItem from "../components/InputItem.vue";
 import Button from "../components/Button.vue";
 
 import UsersService from "../services/UsersService";
+import { dispatchError } from "../utils/getError";
+import { openToast } from "../libs/toast";
 
 const { state, commit } = useStore();
 
@@ -167,8 +169,14 @@ async function handleEditAuth() {
     );
 
     commit("SET_USER", { ...user, ...updatedUser });
+
+    openToast({
+      type: "success",
+      message: "Os dados de login foram atualizados.",
+      position: "top-right",
+    });
   } catch (err) {
-    console.log(err);
+    dispatchError(err);
   } finally {
     isLoadingAuthEditing.value = false;
   }
@@ -184,8 +192,14 @@ async function handleEditProfile() {
     );
 
     commit("SET_USER", updatedUser);
+
+    openToast({
+      type: "success",
+      message: "Os dados de perfil foram atualizados.",
+      position: "top-right",
+    });
   } catch (err) {
-    console.log(err);
+    dispatchError(err);
   } finally {
     isLoadingProfileEditing.value = false;
   }

@@ -34,6 +34,7 @@ import InputItem from "../components/InputItem.vue";
 import Button from "../components/Button.vue";
 
 import UsersService from "../services/UsersService";
+import { dispatchError } from "../utils/getError";
 
 const email = ref("");
 const password = ref("");
@@ -49,7 +50,7 @@ async function handleSubmit() {
       password: password.value,
     });
   } catch (err) {
-    console.log(err);
+    dispatchError(err);
   } finally {
     isLoading.value = false;
   }

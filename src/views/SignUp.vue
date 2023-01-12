@@ -116,6 +116,7 @@ import InputItem from "../components/InputItem.vue";
 import Button from "../components/Button.vue";
 
 import UsersService from "../services/UsersService";
+import { dispatchError } from "../utils/getError";
 
 const signUpForm = ref({
   email: "",
@@ -146,7 +147,7 @@ async function handleCreateUser() {
 
     await UsersService.signUp(signUpForm.value);
   } catch (err) {
-    console.log(err);
+    dispatchError(err);
   } finally {
     isLoading.value = false;
   }
