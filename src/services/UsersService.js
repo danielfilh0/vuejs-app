@@ -8,6 +8,7 @@ import {
 import {
   getDocs,
   setDoc,
+  updateDoc,
   doc,
   collection,
   query,
@@ -43,8 +44,8 @@ class UsersService {
 
     if (userAlreadyExists) throw new Error("User already exists.");
 
-    const uid = await this.createIntoAuth({ email, password });
-    const user = await this.createIntoDb(uid, dataUser);
+    const uid = await this.createInAuth({ email, password });
+    const user = await this.createInDb(uid, dataUser);
 
     return user;
   }
@@ -67,7 +68,7 @@ class UsersService {
     return onAuthStateChanged(this.auth, callback);
   }
 
-  async createIntoAuth({ email, password }) {
+  async createInAuth({ email, password }) {
     const { user } = await createUserWithEmailAndPassword(
       this.auth,
       email,
@@ -77,9 +78,18 @@ class UsersService {
     return user.uid;
   }
 
-  async createIntoDb(uid, dataUser) {
-    const user = { ...dataUser, password: "" };
+  async createInDb(uid, dataUser) {
+    const user = { ...dataUser, uid, password: "" };
     await setDoc(doc(this.db, "users", uid), user);
+
+    return user;
+  }
+
+  async updateInDb(uid, dataUser) {
+    const userRef = doc(this.db, "users", uid);
+    const user = { ...dataUser, uid };
+
+    await updateDoc(userRef, user);
 
     return user;
   }

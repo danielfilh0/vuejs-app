@@ -11,12 +11,14 @@
 </template>
 
 <script setup>
-import UsersService from "../services/UsersService";
+import { computed } from "vue";
 import { useStore } from "vuex";
+
+import UsersService from "../services/UsersService";
 
 const { state } = useStore();
 
-const name = state.user.name;
+const name = computed(() => state.user.name);
 
 async function handleLogout() {
   UsersService.signOut();

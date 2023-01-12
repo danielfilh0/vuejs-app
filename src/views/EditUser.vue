@@ -81,28 +81,36 @@
 
 <script setup>
 import { ref } from "vue";
+import { useStore } from "vuex";
 
 import FormCard from "../components/FormCard.vue";
 import InputItem from "../components/InputItem.vue";
 import Button from "../components/Button.vue";
 
+import UsersService from "../services/UsersService";
+
+const { state, commit } = useStore();
+
+const user = state.user;
+
 const editForm = ref({
-  email: "",
-  password: "",
-  name: "",
-  cpf: "",
-  pis: "",
-  country: "",
-  cep: "",
-  street: "",
-  number: "",
-  state: "",
-  city: "",
-  complement: "",
+  email: user.email,
+  name: user.name,
+  cpf: user.cpf || "",
+  pis: user.pis || "",
+  country: user.country || "",
+  cep: user.cep || "",
+  street: user.street || "",
+  number: user.number || "",
+  state: user.state || "",
+  city: user.city || "",
+  complement: user.complement || "",
 });
 
-function handleSubmit() {
-  console.log(editForm.value);
+async function handleSubmit() {
+  const updatedUser = await UsersService.updateInDb(user.uid, editForm.value);
+
+  commit("SET_USER", updatedUser);
 }
 </script>
 
