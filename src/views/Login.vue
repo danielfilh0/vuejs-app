@@ -3,7 +3,7 @@
     <FormCard>
       <div class="card">
         <h1>Olá visitante, seja bem-vindo!</h1>
-        <form>
+        <form @submit.prevent="handleSubmit">
           <InputItem v-model="email" id="email" type="email" label="Email" />
           <InputItem
             v-model="password"
@@ -30,8 +30,17 @@ import FormCard from "../components/FormCard.vue";
 import InputItem from "../components/InputItem.vue";
 import Button from "../components/Button.vue";
 
+import UsersService from "../services/UsersService";
+
 const email = ref("");
 const password = ref("");
+
+async function handleSubmit() {
+  await UsersService.signIn({
+    email: email.value,
+    password: password.value,
+  });
+}
 </script>
 
 <style scoped lang="scss">

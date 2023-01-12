@@ -15,8 +15,6 @@
 </template>
 
 <script setup>
-import { defineEmits } from "vue";
-
 import isEmailValid from "../utils/isEmailValid";
 
 const props = defineProps({

@@ -1,10 +1,16 @@
 <template>
-  <Header />
-  <slot></slot>
+  <div v-if="state.user">
+    <Header />
+
+    <main>
+      <slot></slot>
+    </main>
+  </div>
 </template>
 
 <script setup>
 import Header from "../Header.vue";
-</script>
+import { useStore } from "vuex";
 
-<style></style>
+const { state } = useStore();
+</script>

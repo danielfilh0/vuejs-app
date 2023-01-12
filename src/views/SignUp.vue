@@ -112,6 +112,8 @@ import FormCard from "../components/FormCard.vue";
 import InputItem from "../components/InputItem.vue";
 import Button from "../components/Button.vue";
 
+import UsersService from "../services/UsersService";
+
 const signUpForm = ref({
   email: "",
   password: "",
@@ -133,8 +135,9 @@ function handleError(event) {
   hasError.value = !event;
 }
 
-function handleSubmit() {
-  console.log(signUpForm.value);
+async function handleSubmit() {
+  const user = await UsersService.signUp(signUpForm.value);
+  console.log(user);
 }
 </script>
 
