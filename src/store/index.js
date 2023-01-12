@@ -9,6 +9,9 @@ export default createStore({
     SET_USER(state, user) {
       state.user = user;
     },
+    UPDATE_USER(state, user) {
+      state.user = { ...state.user, ...user };
+    },
     SET_IS_LOADING(state, status) {
       state.isLoading = status;
     },

@@ -168,7 +168,7 @@ async function handleEditAuth() {
       editAuthForm.value
     );
 
-    commit("SET_USER", { ...user, ...updatedUser });
+    commit("UPDATE_USER", updatedUser);
 
     openToast({
       type: "success",
@@ -191,7 +191,7 @@ async function handleEditProfile() {
       editProfileForm.value
     );
 
-    commit("SET_USER", updatedUser);
+    commit("UPDATE_USER", updatedUser);
 
     openToast({
       type: "success",
@@ -211,9 +211,9 @@ async function handleDeleteUser() {
 
     await UsersService.delete(user.uid);
   } catch (err) {
-    console.log(err);
+    dispatchError(err);
   } finally {
-    isLoadingUserRemoval.value = true;
+    isLoadingUserRemoval.value = false;
   }
 }
 </script>

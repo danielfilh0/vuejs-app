@@ -83,7 +83,15 @@ class UsersService {
   }
 
   async createInDb(uid, dataUser) {
-    const user = { ...dataUser, uid, password: "" };
+    const user = {
+      ...dataUser,
+      uid,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    delete user.password;
+
     await setDoc(doc(this.db, "users", uid), user);
 
     return user;
@@ -97,12 +105,16 @@ class UsersService {
 
     if (password) await updatePassword(this.auth.currentUser, password);
 
-    return { email, password: "" };
+    return { email };
   }
 
   async updateInDb(uid, dataUser) {
     const userRef = doc(this.db, "users", uid);
-    const user = { ...dataUser, uid };
+    const user = {
+      ...dataUser,
+      uid,
+      updatedAt: new Date(),
+    };
 
     await updateDoc(userRef, user);
 
