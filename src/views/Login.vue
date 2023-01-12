@@ -2,7 +2,10 @@
   <main class="sm-container">
     <FormCard>
       <div class="card">
-        <h1>Olá visitante, seja bem-vindo!</h1>
+        <header>
+          <h1>Olá visitante, seja bem-vindo!</h1>
+        </header>
+
         <form @submit.prevent="handleSubmit">
           <InputItem v-model="email" id="email" type="email" label="Email" />
           <InputItem

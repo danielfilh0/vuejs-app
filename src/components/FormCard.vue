@@ -10,9 +10,14 @@
   border: 1px solid var(--gray-200-color);
   border-radius: 24px;
 
-  h1 {
+  > header {
     margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
+  h1 {
     font-size: 1.125rem;
     font-weight: 600;
   }

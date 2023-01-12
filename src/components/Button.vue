@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :type="type" :disabled="disabled">
+  <button :class="'button ' + className" :type="type" :disabled="disabled">
     <slot></slot>
   </button>
 </template>
@@ -8,6 +8,10 @@
 defineProps({
   type: {
     default: "button",
+    type: String,
+  },
+  className: {
+    default: "",
     type: String,
   },
   disabled: {
@@ -19,7 +23,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .button {
-  padding: 0.5rem 0;
+  padding: 0.5rem 1rem;
   background: var(--primary-color);
   color: var(--white-color);
   border: none;
@@ -36,6 +40,10 @@ defineProps({
   &[disabled] {
     background: var(--gray-600-color);
     cursor: not-allowed;
+  }
+
+  &.danger {
+    background: var(--red-color);
   }
 }
 </style>

@@ -2,7 +2,13 @@
   <div class="lg-container">
     <FormCard>
       <div class="card">
-        <h1>Editar dados de login</h1>
+        <header>
+          <h1>Editar dados de login</h1>
+
+          <Button className="danger" @click.prevent="handleDeleteUser"
+            >Remover usuário</Button
+          >
+        </header>
 
         <form @submit.prevent="handleEditAuth">
           <div class="wrapper two-grids">
@@ -27,7 +33,9 @@
 
     <FormCard>
       <div class="card">
-        <h1>Editar dados de perfil</h1>
+        <header>
+          <h1>Editar dados de perfil</h1>
+        </header>
 
         <form @submit.prevent="handleEditProfile">
           <div class="wrapper two-grids">
@@ -152,6 +160,10 @@ async function handleEditProfile() {
   );
 
   commit("SET_USER", updatedUser);
+}
+
+async function handleDeleteUser() {
+  UsersService.delete(user.uid);
 }
 </script>
 

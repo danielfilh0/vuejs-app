@@ -5,6 +5,7 @@ import {
   signOut as logout,
   updateEmail,
   updatePassword,
+  deleteUser,
 } from "firebase/auth";
 
 import {
@@ -15,6 +16,7 @@ import {
   collection,
   query,
   where,
+  deleteDoc,
 } from "firebase/firestore";
 
 import FirebaseClient from "./utils/FirebaseClient";
@@ -62,11 +64,11 @@ class UsersService {
     return user;
   }
 
-  async signOut() {
+  signOut() {
     return logout(this.auth);
   }
 
-  async listenLoggedAuth(callback) {
+  listenLoggedAuth(callback) {
     return onAuthStateChanged(this.auth, callback);
   }
 
@@ -105,6 +107,21 @@ class UsersService {
     await updateDoc(userRef, user);
 
     return user;
+  }
+
+  deleteFromAuth() {
+    return deleteUser(this.auth.currentUser);
+  }
+
+  deleteFromDb(uid) {
+    return deleteDoc(doc(this.db, "users", uid));
+  }
+
+  async delete(uid) {
+    await this.deleteFromAuth();
+    await this.deleteFromDb(uid);
+
+    return true;
   }
 }
 

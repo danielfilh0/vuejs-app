@@ -2,7 +2,10 @@
   <main class="lg-container">
     <FormCard>
       <div class="card">
-        <h1>Olá visitante, realize o seu cadastro abaixo.</h1>
+        <header>
+          <h1>Olá visitante, realize o seu cadastro abaixo.</h1>
+        </header>
+
         <form @submit.prevent="handleSubmit">
           <div class="wrapper two-grids">
             <div>
