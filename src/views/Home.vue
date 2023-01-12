@@ -121,6 +121,12 @@ main {
     border: 1px solid var(--gray-200-color);
     padding: 0.5rem 1.5rem;
     border-radius: 8px;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
   }
 
   > header {

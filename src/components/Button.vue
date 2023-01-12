@@ -1,10 +1,17 @@
 <template>
-  <button :class="'button ' + className" :type="type" :disabled="disabled">
-    <slot></slot>
+  <button
+    :class="'button ' + className"
+    :type="type"
+    :disabled="disabled || isLoading"
+  >
+    <Spinner v-if="isLoading" :size="20" />
+    <slot v-else></slot>
   </button>
 </template>
 
 <script setup>
+import Spinner from "./Spinner.vue";
+
 defineProps({
   type: {
     default: "button",
@@ -18,12 +25,17 @@ defineProps({
     default: false,
     type: Boolean,
   },
+  isLoading: {
+    default: false,
+    type: Boolean,
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 .button {
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
+  height: 40px;
   background: var(--primary-color);
   color: var(--white-color);
   border: none;

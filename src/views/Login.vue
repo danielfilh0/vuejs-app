@@ -14,7 +14,7 @@
             type="password"
             label="Senha"
           />
-          <Button type="submit">Entrar</Button>
+          <Button type="submit" :isLoading="isLoading">Entrar</Button>
         </form>
 
         <p>
@@ -38,11 +38,21 @@ import UsersService from "../services/UsersService";
 const email = ref("");
 const password = ref("");
 
+const isLoading = ref(false);
+
 async function handleSubmit() {
-  await UsersService.signIn({
-    email: email.value,
-    password: password.value,
-  });
+  try {
+    isLoading.value = true;
+
+    await UsersService.signIn({
+      email: email.value,
+      password: password.value,
+    });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
 

@@ -5,9 +5,13 @@
         <header>
           <h1>Editar dados de login</h1>
 
-          <Button className="danger" @click.prevent="handleDeleteUser"
-            >Remover usuário</Button
+          <Button
+            className="danger"
+            :isLoading="isLoadingUserRemoval"
+            @click.prevent="handleDeleteUser"
           >
+            Remover usuário
+          </Button>
         </header>
 
         <form @submit.prevent="handleEditAuth">
@@ -26,7 +30,9 @@
             />
           </div>
 
-          <Button type="submit">Salvar</Button>
+          <Button type="submit" :isLoading="isLoadingAuthEditing">
+            Salvar
+          </Button>
         </form>
       </div>
     </FormCard>
@@ -106,7 +112,9 @@
               label="Complemento"
             />
           </div>
-          <Button type="submit">Editar</Button>
+          <Button type="submit" :isLoading="isLoadingProfileEditing">
+            Editar
+          </Button>
         </form>
       </div>
     </FormCard>
@@ -145,25 +153,54 @@ const editProfileForm = ref({
   complement: user.complement || "",
 });
 
+const isLoadingAuthEditing = ref(false);
+const isLoadingProfileEditing = ref(false);
+const isLoadingUserRemoval = ref(false);
+
 async function handleEditAuth() {
-  const updatedUser = await UsersService.updateInAuth(
-    user.uid,
-    editAuthForm.value
-  );
-  commit("SET_USER", { ...user, ...updatedUser });
+  try {
+    isLoadingAuthEditing.value = true;
+
+    const updatedUser = await UsersService.updateInAuth(
+      user.uid,
+      editAuthForm.value
+    );
+
+    commit("SET_USER", { ...user, ...updatedUser });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isLoadingAuthEditing.value = false;
+  }
 }
 
 async function handleEditProfile() {
-  const updatedUser = await UsersService.updateInDb(
-    user.uid,
-    editProfileForm.value
-  );
+  try {
+    isLoadingProfileEditing.value = true;
 
-  commit("SET_USER", updatedUser);
+    const updatedUser = await UsersService.updateInDb(
+      user.uid,
+      editProfileForm.value
+    );
+
+    commit("SET_USER", updatedUser);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isLoadingProfileEditing.value = false;
+  }
 }
 
 async function handleDeleteUser() {
-  UsersService.delete(user.uid);
+  try {
+    isLoadingUserRemoval.value = true;
+
+    await UsersService.delete(user.uid);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isLoadingUserRemoval.value = true;
+  }
 }
 </script>
 

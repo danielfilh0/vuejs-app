@@ -58,8 +58,11 @@
     color: var(--gray-400-color);
 
     a {
-      text-decoration: none;
       color: var(--primary-color);
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

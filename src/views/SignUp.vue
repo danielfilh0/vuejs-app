@@ -6,7 +6,7 @@
           <h1>Olá visitante, realize o seu cadastro abaixo.</h1>
         </header>
 
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="handleCreateUser">
           <div class="wrapper two-grids">
             <div>
               <h3>Dados de login</h3>
@@ -97,7 +97,7 @@
               label="Complemento"
             />
           </div>
-          <Button type="submit">Cadastrar</Button>
+          <Button type="submit" :isLoading="isLoading">Cadastrar</Button>
         </form>
         <p>
           Já possui uma conta?
@@ -132,15 +132,24 @@ const signUpForm = ref({
   complement: "",
 });
 
+const isLoading = ref(false);
+
 // wip
 const hasError = ref(true);
 function handleError(event) {
   hasError.value = !event;
 }
 
-async function handleSubmit() {
-  const user = await UsersService.signUp(signUpForm.value);
-  console.log(user);
+async function handleCreateUser() {
+  try {
+    isLoading.value = true;
+
+    await UsersService.signUp(signUpForm.value);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
 
