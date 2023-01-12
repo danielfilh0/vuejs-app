@@ -3,6 +3,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut as logout,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
 
 import {
@@ -83,6 +85,17 @@ class UsersService {
     await setDoc(doc(this.db, "users", uid), user);
 
     return user;
+  }
+
+  async updateInAuth(uid, { email, password }) {
+    if (email) {
+      await updateEmail(this.auth.currentUser, email);
+      await this.updateInDb(uid, { email });
+    }
+
+    if (password) await updatePassword(this.auth.currentUser, password);
+
+    return { email, password: "" };
   }
 
   async updateInDb(uid, dataUser) {
