@@ -3,7 +3,7 @@
     <router-link to="/">Vuejs App</router-link>
 
     <div>
-      <p>Daniel Filho</p>
+      <p>{{ name }}</p>
 
       <button @click.prevent="handleLogout">Sair</button>
     </div>
@@ -12,6 +12,11 @@
 
 <script setup>
 import UsersService from "../services/UsersService";
+import { useStore } from "vuex";
+
+const { state } = useStore();
+
+const name = state.user.name;
 
 async function handleLogout() {
   UsersService.signOut();

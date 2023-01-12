@@ -14,37 +14,61 @@
           <li>
             <p>Nome</p>
 
-            <p>Daniel Filho</p>
+            <p>{{ user.name }}</p>
           </li>
 
           <li>
             <p>Email</p>
 
-            <p>danbsilva98@gmail.com</p>
+            <p>{{ user.email }}</p>
           </li>
 
           <li>
             <p>CPF</p>
 
-            <p>999.999.999-99</p>
-          </li>
-
-          <li>
-            <p>Endereço</p>
-
-            <p>Rua Front end developer, 551, Vuejs</p>
-          </li>
-
-          <li>
-            <p>CEP</p>
-
-            <p>60710321</p>
+            <p>{{ user.cpf || "-" }}</p>
           </li>
 
           <li>
             <p>PIS</p>
 
-            <p>999999999</p>
+            <p>{{ user.pis || "-" }}</p>
+          </li>
+
+          <li>
+            <p>CEP</p>
+
+            <p>{{ user.cep || "-" }}</p>
+          </li>
+
+          <li>
+            <p>Endereço</p>
+
+            <p>{{ address }}</p>
+          </li>
+
+          <li>
+            <p>Complemento</p>
+
+            <p>{{ user.complement || "-" }}</p>
+          </li>
+
+          <li>
+            <p>Cidade</p>
+
+            <p>{{ user.city || "-" }}</p>
+          </li>
+
+          <li>
+            <p>Estado</p>
+
+            <p>{{ user.state || "-" }}</p>
+          </li>
+
+          <li>
+            <p>País</p>
+
+            <p>{{ user.country || "-" }}</p>
           </li>
         </ul>
       </div>
@@ -52,7 +76,16 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup>
+import { useStore } from "vuex";
+
+const { state } = useStore();
+
+const user = state.user;
+
+const address =
+  user.street && user.number ? `${user.street}, ${user.number}` : "-";
+</script>
 
 <style scoped lang="scss">
 main {
