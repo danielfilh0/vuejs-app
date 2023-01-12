@@ -4,18 +4,23 @@
       >{{ props.label }} <span v-if="props.required">*</span></label
     >
     <input
+      :class="error && 'error'"
       :id="props.id"
       :type="props.type"
       :value="props.modelValue"
       :placeholder="props.placeholder"
+      :maxlength="maxLength"
       @input="handleUpdateValue"
-      @keyup="handleError"
+      @keyup="handleKeyUp"
     />
+    <p v-if="error" class="error">{{ error }}</p>
   </div>
 </template>
 
 <script setup>
-import isEmailValid from "../utils/isEmailValid";
+import { computed, ref } from "vue";
+
+import { formatCpf, formatCep, formatPis } from "../utils/masks";
 
 const props = defineProps({
   id: String,
@@ -31,22 +36,32 @@ const props = defineProps({
     default: false,
     type: Boolean,
   },
+  maxLength: {
+    default: "",
+    type: String,
+  },
   placeholder: String,
   modelValue: [String, Number],
 });
-
 const emit = defineEmits(["update:modelValue", "onError"]);
+const error = ref(false);
+
+const maxLength = computed(() => {
+  if (props.maxLength) return props.maxLength;
+  if (props.id === "cpf" || props.id === "pis") return "14";
+  if (props.id === "cep") return "10";
+  return "";
+});
 
 function handleUpdateValue(event) {
-  emit("update:modelValue", event.target.value);
-}
-
-// wip
-function handleError() {
-  if (props.required) {
-    if (props.id === "email") {
-      emit("onError", isEmailValid(props.modelValue));
-    }
+  if (props.id === "cpf") {
+    emit("update:modelValue", formatCpf(event.target.value));
+  } else if (props.id === "cep") {
+    emit("update:modelValue", formatCep(event.target.value));
+  } else if (props.id === "pis") {
+    emit("update:modelValue", formatPis(event.target.value));
+  } else {
+    emit("update:modelValue", event.target.value);
   }
 }
 </script>
@@ -86,5 +101,14 @@ input {
   background: transparent;
   border: 1px solid var(--gray-200-color);
   border-radius: 8px;
+
+  &.error {
+    border-color: var(--red-color) !important;
+  }
+}
+
+p.error {
+  text-align: left;
+  color: var(--red-color);
 }
 </style>
