@@ -14,7 +14,9 @@
             type="password"
             label="Senha"
           />
-          <Button type="submit" :isLoading="isLoading">Entrar</Button>
+          <Button type="submit" :isLoading="isLoading" :disabled="!formIsValid"
+            >Entrar</Button
+          >
         </form>
 
         <p>
@@ -27,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 import FormCard from "../components/FormCard.vue";
 import InputItem from "../components/InputItem.vue";
@@ -35,11 +37,25 @@ import Button from "../components/Button.vue";
 
 import UsersService from "../services/UsersService";
 import { dispatchError } from "../utils/getError";
+import {
+  validateEmailField,
+  validatePasswordField,
+} from "../utils/validateField";
 
 const email = ref("");
 const password = ref("");
 
 const isLoading = ref(false);
+
+const formIsValid = computed(() => {
+  if (
+    !validateEmailField(email.value) ||
+    !validatePasswordField(password.value)
+  ) {
+    return false;
+  }
+  return true;
+});
 
 async function handleSubmit() {
   try {

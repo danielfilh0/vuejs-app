@@ -4,7 +4,7 @@
       >{{ props.label }} <span v-if="props.required">*</span></label
     >
     <input
-      :class="error && 'error'"
+      :class="errors.length && 'error'"
       :id="props.id"
       :type="props.type"
       :value="props.modelValue"
@@ -13,7 +13,7 @@
       @input="handleUpdateValue"
       @keyup="handleKeyUp"
     />
-    <p v-if="error" class="error">{{ error }}</p>
+    <p v-if="errors.length" class="error">{{ error }}</p>
   </div>
 </template>
 
@@ -43,8 +43,10 @@ const props = defineProps({
   placeholder: String,
   modelValue: [String, Number],
 });
-const emit = defineEmits(["update:modelValue", "onError"]);
-const error = ref(false);
+
+const emit = defineEmits(["update:modelValue", "onValidate"]);
+
+const errors = ref({});
 
 const maxLength = computed(() => {
   if (props.maxLength) return props.maxLength;
@@ -63,6 +65,10 @@ function handleUpdateValue(event) {
   } else {
     emit("update:modelValue", event.target.value);
   }
+}
+
+function handleKeyUp() {
+  emit("onValidate", { field: props.id, value: props.modelValue });
 }
 </script>
 

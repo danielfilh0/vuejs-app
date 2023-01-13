@@ -16,7 +16,7 @@
                 type="email"
                 label="Email"
                 required
-                @onError="handleError"
+                @onValidate="handleValidateForm"
               />
               <InputItem
                 v-model="signUpForm.password"
@@ -24,7 +24,7 @@
                 type="password"
                 label="Senha"
                 required
-                @onError="handleError"
+                @onValidate="handleValidateForm"
               />
             </div>
 
@@ -36,6 +36,7 @@
                 type="text"
                 label="Nome"
                 required
+                @onValidate="handleValidateForm"
               />
               <InputItem
                 v-model="signUpForm.cpf"
@@ -97,7 +98,9 @@
               label="Complemento"
             />
           </div>
-          <Button type="submit" :isLoading="isLoading">Cadastrar</Button>
+          <Button type="submit" :isLoading="isLoading" :disabled="!formIsValid"
+            >Cadastrar</Button
+          >
         </form>
         <p>
           Já possui uma conta?
@@ -117,6 +120,11 @@ import Button from "../components/Button.vue";
 
 import UsersService from "../services/UsersService";
 import { dispatchError } from "../utils/getError";
+import {
+  validateEmailField,
+  validateFieldLength,
+  validatePasswordField,
+} from "../utils/validateField";
 
 const signUpForm = ref({
   email: "",
@@ -132,13 +140,19 @@ const signUpForm = ref({
   city: "",
   complement: "",
 });
-
 const isLoading = ref(false);
+const formIsValid = ref(false);
 
-// wip
-const hasError = ref(true);
-function handleError(event) {
-  hasError.value = !event;
+function handleValidateForm() {
+  if (
+    !validateEmailField(signUpForm.value.email) ||
+    !validateFieldLength(signUpForm.value.name) ||
+    !validatePasswordField(signUpForm.value.password)
+  ) {
+    formIsValid.value = false;
+  } else {
+    formIsValid.value = true;
+  }
 }
 
 async function handleCreateUser() {

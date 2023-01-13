@@ -21,16 +21,22 @@
               id="email"
               type="email"
               label="Novo email"
+              @onValidate="handleValidateAuthForm"
             />
             <InputItem
               v-model="editAuthForm.password"
               id="password"
               type="password"
               label="Nova senha"
+              @onValidate="handleValidateAuthForm"
             />
           </div>
 
-          <Button type="submit" :isLoading="isLoadingAuthEditing">
+          <Button
+            type="submit"
+            :isLoading="isLoadingAuthEditing"
+            :disabled="!isAuthFormValid"
+          >
             Salvar
           </Button>
         </form>
@@ -51,6 +57,7 @@
                 id="name"
                 type="text"
                 label="Nome"
+                @onValidate="handleValidateProfileForm"
               />
               <InputItem
                 v-model="editProfileForm.cpf"
@@ -112,7 +119,11 @@
               label="Complemento"
             />
           </div>
-          <Button type="submit" :isLoading="isLoadingProfileEditing">
+          <Button
+            type="submit"
+            :isLoading="isLoadingProfileEditing"
+            :disabled="!isProfileFormValid"
+          >
             Editar
           </Button>
         </form>
@@ -132,6 +143,11 @@ import Button from "../components/Button.vue";
 import UsersService from "../services/UsersService";
 import { dispatchError } from "../utils/getError";
 import { openToast } from "../libs/toast";
+import {
+  validateEmailField,
+  validatePasswordField,
+  validateFieldLength,
+} from "../utils/validateField";
 
 const { state, commit } = useStore();
 
@@ -158,6 +174,8 @@ const editProfileForm = ref({
 const isLoadingAuthEditing = ref(false);
 const isLoadingProfileEditing = ref(false);
 const isLoadingUserRemoval = ref(false);
+const isAuthFormValid = ref(false);
+const isProfileFormValid = ref(true);
 
 async function handleEditAuth() {
   try {
@@ -215,6 +233,41 @@ async function handleDeleteUser() {
   } finally {
     isLoadingUserRemoval.value = false;
   }
+}
+
+function handleValidateProfileForm() {
+  if (validateFieldLength(editProfileForm.value.name)) {
+    isProfileFormValid.value = true;
+  } else {
+    isProfileFormValid.value = false;
+  }
+}
+
+function handleValidateAuthForm() {
+  if (validateAuthForm(editAuthForm.value)) {
+    isAuthFormValid.value = true;
+  } else {
+    isAuthFormValid.value = false;
+  }
+}
+
+function validateAuthForm(fields) {
+  const { email, password } = fields;
+
+  if (!email.length && !password.length) {
+    return false;
+  }
+  if (validateEmailField(email) && !password.length) {
+    return true;
+  }
+  if (validatePasswordField(password) && !email.length) {
+    return true;
+  }
+  if (validateEmailField(email) && validatePasswordField(password)) {
+    return true;
+  }
+
+  return false;
 }
 </script>
 
