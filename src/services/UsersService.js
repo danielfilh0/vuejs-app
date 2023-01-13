@@ -19,12 +19,15 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
 import FirebaseClient from "./utils/FirebaseClient";
 
 class UsersService {
   constructor() {
     this.auth = new FirebaseClient().auth;
     this.db = new FirebaseClient().db;
+    this.storage = new FirebaseClient().storage;
   }
 
   async getByEmail(email) {
@@ -40,6 +43,31 @@ class UsersService {
     });
 
     return user;
+  }
+
+  async createInAuth({ email, password }) {
+    const { user } = await createUserWithEmailAndPassword(
+      this.auth,
+      email,
+      password
+    );
+
+    return user.uid;
+  }
+
+  async createInDb(uid, dataUser) {
+    const user = {
+      ...dataUser,
+      uid,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    delete user.password;
+
+    await setDoc(doc(this.db, "users", uid), user);
+
+    return user.uid;
   }
 
   async signUp(dataUser) {
@@ -70,31 +98,6 @@ class UsersService {
 
   listenLoggedAuth(callback) {
     return onAuthStateChanged(this.auth, callback);
-  }
-
-  async createInAuth({ email, password }) {
-    const { user } = await createUserWithEmailAndPassword(
-      this.auth,
-      email,
-      password
-    );
-
-    return user.uid;
-  }
-
-  async createInDb(uid, dataUser) {
-    const user = {
-      ...dataUser,
-      uid,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    delete user.password;
-
-    await setDoc(doc(this.db, "users", uid), user);
-
-    return user;
   }
 
   async updateInAuth(uid, { email, password }) {
@@ -134,6 +137,28 @@ class UsersService {
     await this.deleteFromDb(uid);
 
     return true;
+  }
+
+  uploadPhoto(uid, file) {
+    const photoUserRef = ref(this.storage, "users/photos/" + uid);
+
+    return uploadBytes(photoUserRef, file);
+  }
+
+  downloadPhoto(uid) {
+    const photoUserRef = ref(this.storage, "users/photos/" + uid);
+
+    return getDownloadURL(photoUserRef);
+  }
+
+  async savePhotoInDb(uid, file) {
+    await this.uploadPhoto(uid, file);
+
+    const url = await this.downloadPhoto(uid);
+
+    await this.updateInDb(uid, { photo: url });
+
+    return url;
   }
 }
 

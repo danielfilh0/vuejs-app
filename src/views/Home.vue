@@ -12,6 +12,15 @@
 
         <ul>
           <li>
+            <p>Foto</p>
+
+            <img
+              :src="getters.photoURL"
+              :alt="'Foto de perfil de ' + state.user.name"
+            />
+          </li>
+
+          <li>
             <p>Nome</p>
 
             <p>{{ user.name }}</p>
@@ -79,7 +88,7 @@
 <script setup>
 import { useStore } from "vuex";
 
-const { state } = useStore();
+const { state, getters } = useStore();
 
 const user = state.user;
 

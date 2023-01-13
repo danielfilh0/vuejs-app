@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 class FirebaseClient {
   constructor() {
@@ -15,6 +16,7 @@ class FirebaseClient {
     this.app = initializeApp(this.firebaseConfig);
     this.auth = getAuth(this.app);
     this.db = getFirestore(this.app);
+    this.storage = getStorage(this.app);
   }
 }
 

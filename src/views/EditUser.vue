@@ -64,6 +64,8 @@
         <form @submit.prevent="handleEditProfile">
           <div class="wrapper two-grids">
             <div>
+              <PhotoInput @onChangePhoto="handleChangePhoto" />
+
               <InputItem
                 v-model="editProfileForm.name"
                 id="name"
@@ -156,6 +158,7 @@ import { useStore } from "vuex";
 
 import FormCard from "../components/FormCard.vue";
 import InputItem from "../components/InputItem.vue";
+import PhotoInput from "../components/PhotoInput.vue";
 import Button from "../components/Button.vue";
 
 import UsersService from "../services/UsersService";
@@ -172,6 +175,8 @@ import {
 const { state, commit } = useStore();
 
 const user = state.user;
+
+const photo = ref(null);
 
 const editAuthForm = ref({
   email: "",
@@ -196,6 +201,10 @@ const isLoadingProfileEditing = ref(false);
 const isLoadingUserRemoval = ref(false);
 const isAuthFormValid = ref(false);
 const isProfileFormValid = ref(true);
+
+function handleChangePhoto(event) {
+  photo.value = event;
+}
 
 async function handleEditAuth() {
   try {
@@ -223,6 +232,13 @@ async function handleEditAuth() {
 async function handleEditProfile() {
   try {
     isLoadingProfileEditing.value = true;
+
+    if (photo.value) {
+      await UsersService.uploadPhoto(user.uid, photo.value);
+      const photoURL = await UsersService.downloadPhoto(user.uid);
+
+      editProfileForm.value.photoURL = photoURL;
+    }
 
     const updatedUser = await UsersService.updateInDb(
       user.uid,

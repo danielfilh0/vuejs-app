@@ -3,6 +3,10 @@
     <router-link to="/">Vuejs App</router-link>
 
     <div>
+      <img
+        :src="getters.photoURL"
+        :alt="'Foto de perfil de ' + state.user.name"
+      />
       <p>{{ name }}</p>
 
       <button @click.prevent="handleLogout">Sair</button>
@@ -16,7 +20,7 @@ import { useStore } from "vuex";
 
 import UsersService from "../services/UsersService";
 
-const { state } = useStore();
+const { state, getters } = useStore();
 
 const name = computed(() => state.user.name);
 
