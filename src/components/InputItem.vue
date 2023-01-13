@@ -1,10 +1,9 @@
 <template>
-  <div class="input-item">
+  <div class="input-item" :class="error && 'error'">
     <label v-if="props.label" :for="id"
       >{{ props.label }} <span v-if="props.required">*</span></label
     >
     <input
-      :class="errors.length && 'error'"
       :id="props.id"
       :type="props.type"
       :value="props.modelValue"
@@ -13,7 +12,7 @@
       @input="handleUpdateValue"
       @keyup="handleKeyUp"
     />
-    <p v-if="errors.length" class="error">{{ error }}</p>
+    <p v-if="error">{{ error }}</p>
   </div>
 </template>
 
@@ -40,13 +39,19 @@ const props = defineProps({
     default: "",
     type: String,
   },
+  rules: {
+    default() {
+      return [];
+    },
+    type: Array,
+  },
   placeholder: String,
   modelValue: [String, Number],
 });
 
 const emit = defineEmits(["update:modelValue", "onValidate"]);
 
-const errors = ref({});
+const error = ref(false);
 
 const maxLength = computed(() => {
   if (props.maxLength) return props.maxLength;
@@ -54,6 +59,18 @@ const maxLength = computed(() => {
   if (props.id === "cep") return "10";
   return "";
 });
+
+function handleErrors() {
+  if (Array.isArray(props.rules) && props.rules.length) {
+    props.rules.forEach((rule) => {
+      if (rule.validation(props.modelValue)) {
+        error.value = false;
+      } else {
+        error.value = rule.message;
+      }
+    });
+  }
+}
 
 function handleUpdateValue(event) {
   if (props.id === "cpf") {
@@ -69,6 +86,8 @@ function handleUpdateValue(event) {
 
 function handleKeyUp() {
   emit("onValidate", { field: props.id, value: props.modelValue });
+
+  handleErrors();
 }
 </script>
 
@@ -84,6 +103,25 @@ function handleKeyUp() {
 
     input {
       border-color: var(--primary-color);
+    }
+  }
+
+  &.error {
+    label {
+      color: var(--red-color);
+
+      span {
+        color: inherit;
+      }
+    }
+
+    input {
+      border-color: var(--red-color) !important;
+    }
+
+    p {
+      text-align: left;
+      color: var(--red-color);
     }
   }
 }
@@ -107,14 +145,5 @@ input {
   background: transparent;
   border: 1px solid var(--gray-200-color);
   border-radius: 8px;
-
-  &.error {
-    border-color: var(--red-color) !important;
-  }
-}
-
-p.error {
-  text-align: left;
-  color: var(--red-color);
 }
 </style>

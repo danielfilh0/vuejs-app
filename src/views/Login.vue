@@ -7,12 +7,29 @@
         </header>
 
         <form @submit.prevent="handleSubmit">
-          <InputItem v-model="email" id="email" type="email" label="Email" />
+          <InputItem
+            v-model="email"
+            id="email"
+            type="email"
+            label="Email"
+            :rules="[
+              {
+                message: 'Email inválido',
+                validation: validateEmailField,
+              },
+            ]"
+          />
           <InputItem
             v-model="password"
             id="password"
             type="password"
             label="Senha"
+            :rules="[
+              {
+                message: 'A senha precisa de no mínimo 7 caracteres',
+                validation: validatePasswordField,
+              },
+            ]"
           />
           <Button type="submit" :isLoading="isLoading" :disabled="!formIsValid"
             >Entrar</Button

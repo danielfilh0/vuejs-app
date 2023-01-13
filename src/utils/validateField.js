@@ -6,14 +6,26 @@ export function validateEmailField(email) {
   return false;
 }
 
-export function validateFieldLength(field) {
-  if (field.length) return true;
+export function validateEmptyEmailField(email) {
+  if (!email.length) return true;
+
+  return validateEmailField(email);
+}
+
+export function validatePasswordField(password) {
+  if (password.length > 6) return true;
 
   return false;
 }
 
-export function validatePasswordField(field) {
-  if (field.length > 6) return true;
+export function validateEmptyPasswordField(password) {
+  if (!password.length) return true;
+
+  return validatePasswordField(password);
+}
+
+export function validateFieldLength(field) {
+  if (field.length) return true;
 
   return false;
 }

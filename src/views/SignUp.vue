@@ -16,6 +16,12 @@
                 type="email"
                 label="Email"
                 required
+                :rules="[
+                  {
+                    message: 'Email inválido',
+                    validation: validateEmailField,
+                  },
+                ]"
                 @onValidate="handleValidateForm"
               />
               <InputItem
@@ -24,6 +30,12 @@
                 type="password"
                 label="Senha"
                 required
+                :rules="[
+                  {
+                    message: 'A senha precisa de no mínimo 7 caracteres',
+                    validation: validatePasswordField,
+                  },
+                ]"
                 @onValidate="handleValidateForm"
               />
             </div>
@@ -36,6 +48,12 @@
                 type="text"
                 label="Nome"
                 required
+                :rules="[
+                  {
+                    message: 'Nome obrigatório',
+                    validation: validateFieldLength,
+                  },
+                ]"
                 @onValidate="handleValidateForm"
               />
               <InputItem

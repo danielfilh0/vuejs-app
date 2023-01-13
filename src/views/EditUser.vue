@@ -21,6 +21,12 @@
               id="email"
               type="email"
               label="Novo email"
+              :rules="[
+                {
+                  message: 'Email inválido',
+                  validation: validateEmptyEmailField,
+                },
+              ]"
               @onValidate="handleValidateAuthForm"
             />
             <InputItem
@@ -28,6 +34,12 @@
               id="password"
               type="password"
               label="Nova senha"
+              :rules="[
+                {
+                  message: 'A senha precisa de no mínimo 7 caracteres',
+                  validation: validateEmptyPasswordField,
+                },
+              ]"
               @onValidate="handleValidateAuthForm"
             />
           </div>
@@ -57,6 +69,12 @@
                 id="name"
                 type="text"
                 label="Nome"
+                :rules="[
+                  {
+                    message: 'Nome obrigatório',
+                    validation: validateFieldLength,
+                  },
+                ]"
                 @onValidate="handleValidateProfileForm"
               />
               <InputItem
@@ -147,6 +165,8 @@ import {
   validateEmailField,
   validatePasswordField,
   validateFieldLength,
+  validateEmptyEmailField,
+  validateEmptyPasswordField,
 } from "../utils/validateField";
 
 const { state, commit } = useStore();
