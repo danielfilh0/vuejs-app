@@ -181,12 +181,12 @@ async function handleEditAuth() {
   try {
     isLoadingAuthEditing.value = true;
 
-    const updatedUser = await UsersService.updateInAuth(
+    const updatedEmailAndPassword = await UsersService.updateInAuth(
       user.uid,
       editAuthForm.value
     );
 
-    commit("UPDATE_USER", updatedUser);
+    commit("UPDATE_USER_EMAIL", updatedEmailAndPassword);
 
     openToast({
       type: "success",

@@ -105,7 +105,7 @@ class UsersService {
 
     if (password) await updatePassword(this.auth.currentUser, password);
 
-    return { email };
+    return email;
   }
 
   async updateInDb(uid, dataUser) {
