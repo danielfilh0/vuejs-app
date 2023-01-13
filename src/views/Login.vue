@@ -92,6 +92,7 @@ async function handleSubmit() {
 
 <style scoped lang="scss">
 .sm-container {
+  padding: 0 1rem;
   margin: 0 auto;
   max-width: 30rem;
   min-height: 100vh;

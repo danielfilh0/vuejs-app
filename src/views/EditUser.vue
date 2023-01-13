@@ -310,6 +310,7 @@ function validateAuthForm(fields) {
 <style scoped lang="scss">
 .lg-container {
   margin: 1rem auto;
+  padding: 0 1rem;
   max-width: 50rem;
   min-height: 100vh;
   width: 100%;

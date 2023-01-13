@@ -13,8 +13,16 @@
   > header {
     margin-bottom: 2rem;
     display: flex;
+    gap: 1rem;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+  }
+
+  @media (min-width: 576px) {
+    > header {
+      flex-direction: row;
+    }
   }
 
   h1 {
@@ -36,19 +44,45 @@
   }
 
   .wrapper.two-grids {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+
+    > div {
+      & + div {
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    .wrapper.two-grids {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+
+      > div {
+        & + div {
+          margin-top: unset;
+        }
+      }
+    }
   }
 
   .wrapper.three-grids {
-    display: grid;
-    grid-template-columns: 100px 200px 1fr 100px;
-    align-items: center;
-    column-gap: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
 
-    h3 {
-      grid-column: 1 / 5;
+  @media (min-width: 768px) {
+    .wrapper.three-grids {
+      display: grid;
+      grid-template-columns: 100px 200px 1fr 100px;
+      align-items: center;
+      column-gap: 2rem;
+
+      h3 {
+        grid-column: 1 / 5;
+      }
     }
   }
 

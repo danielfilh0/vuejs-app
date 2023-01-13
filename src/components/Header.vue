@@ -31,7 +31,8 @@ async function handleLogout() {
 
 <style scoped lang="scss">
 header {
-  padding: 1rem 0;
+  margin-bottom: 2rem;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,11 +53,13 @@ header {
   }
 
   img {
+    margin-right: 1rem;
     width: 32px;
     border-radius: 8px;
   }
 
   p {
+    display: none;
     font-weight: 700;
     margin-right: 1rem;
   }
@@ -68,6 +71,24 @@ header {
     border: none;
     border-radius: 8px;
     transition: 0.2s;
+  }
+}
+
+@media (min-width: 576px) {
+  header {
+    p {
+      display: inline-block;
+    }
+
+    img {
+      margin-right: unset;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  header {
+    margin-bottom: unset;
   }
 }
 </style>

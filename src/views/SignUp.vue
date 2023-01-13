@@ -188,6 +188,7 @@ async function handleCreateUser() {
 
 <style scoped lang="scss">
 .lg-container {
+  padding: 0 1rem;
   margin: 1rem auto;
   max-width: 50rem;
   min-height: 100vh;
