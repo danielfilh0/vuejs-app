@@ -19,7 +19,12 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 import FirebaseClient from "./utils/FirebaseClient";
 
@@ -133,8 +138,9 @@ class UsersService {
   }
 
   async delete(uid) {
-    await this.deleteFromAuth();
     await this.deleteFromDb(uid);
+    await this.deletePhoto(uid);
+    await this.deleteFromAuth();
 
     return true;
   }
@@ -149,6 +155,12 @@ class UsersService {
     const photoUserRef = ref(this.storage, "users/photos/" + uid);
 
     return getDownloadURL(photoUserRef);
+  }
+
+  deletePhoto(uid) {
+    const photoUserRef = ref(this.storage, "users/photos/" + uid);
+
+    return deleteObject(photoUserRef);
   }
 
   async savePhotoInDb(uid, file) {
