@@ -156,6 +156,8 @@ main {
 
   img {
     width: 72px;
+    height: 72px;
+    object-fit: cover;
     border-radius: 8px;
   }
 }

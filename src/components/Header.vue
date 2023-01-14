@@ -55,6 +55,8 @@ header {
   img {
     margin-right: 1rem;
     width: 32px;
+    height: 32px;
+    object-fit: cover;
     border-radius: 8px;
   }
 
