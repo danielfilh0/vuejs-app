@@ -1,4 +1,6 @@
 <template>
+  <Loader v-if="state.isLoading" />
+
   <div v-if="state.user">
     <Header />
 
@@ -9,8 +11,12 @@
 </template>
 
 <script setup>
-import Header from "../Header.vue";
 import { useStore } from "vuex";
+
+import Header from "../Header.vue";
+import Loader from "../Loader.vue";
 
 const { state } = useStore();
 </script>
+
+<style></style>
