@@ -4,6 +4,9 @@
 
 Este projeto se trata de um app web com a funcionalidade de criação, autenticação, edição e remoção de usuários.
 
+Link de deploy: <a href="https://vue-js-app-virid.vercel.app/">Vuejs App</a>
+
+
 ### Funcionalidades
 - Registro de novas contas com email, senha e outros dados de perfil.
 - Autenticação
